@@ -5,6 +5,7 @@ import COLORS from "../../constants/colors";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    maxHeight: "40%",
     backgroundColor: COLORS.background,
   },
   loadingContainer: {
@@ -14,8 +15,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   listContainer: {
-    padding: 16,
-    paddingBottom: 80, 
+    padding: 10,
+    maxHeight: "100%",
   },
   header: {
     marginBottom: 20,
@@ -34,23 +35,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   songCard: {
-    backgroundColor: COLORS.cardBackground,
-    borderRadius: 16,
-    marginBottom: 20,
-    padding: 16,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    paddingHorizontal: 5,
+    maxWidth: 150,
   },
   songHeader: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 12,
   },
   userInfo: {
     flexDirection: "row",
@@ -69,24 +60,23 @@ const styles = StyleSheet.create({
   },
   songImageContainer: {
     width: "100%",
-    height: 200,
-    borderRadius: 12,
-    overflow: "hidden",
-    marginBottom: 12,
-    backgroundColor: COLORS.border,
+    height: "100%",
   },
   songImage: {
-    width: "100%",
-    height: "100%",
+    width: 130,
+    height: 130,
+    objectFit: "contain",
   },
   songDetails: {
     padding: 4,
   },
   songTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "700",
     color: COLORS.textPrimary,
-    marginBottom: 6,
+    flexWrap: "wrap",
+    maxWidth: "100%",
+    
   },
   ratingContainer: {
     flexDirection: "row",

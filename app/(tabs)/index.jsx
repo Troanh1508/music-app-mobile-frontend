@@ -16,14 +16,13 @@ export default function Home() {
 
     const renderItem = ({ item }) => (
         <View style={styles.songCard}>
-            <View style={styles.songHeader}>
-                <Text>
+                <Image source={item.imageUrl } style={styles.songImage}/>
+                <Text style={styles.songTitle}>
                      {item.title} 
                 </Text>
-            </View>
-            <View style={styles.songImageContainer}>
-                <Image source={item.imageUrl } style={styles.songImage} contentfit="cover"/>
-            </View>
+                <Text style={styles.caption}>
+                    {item.artist.name}
+                </Text>
         </View>
     );
 
@@ -34,7 +33,8 @@ export default function Home() {
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
         />
         
     </View>

@@ -18,8 +18,11 @@ export default function Signup() {
 
     const handleSignup = async() => {
         const result = await signup(username, email, password);
-
         if(!result.success) Alert.alert("Error", result.error);
+        if(result.success) {
+            Alert.alert("Success", "Account created successfully");
+        }
+
     };
 
   return (
@@ -88,7 +91,7 @@ export default function Signup() {
                             />
                             <TextInput
                                 style={styles.input}
-                                placeholder="********"
+                                placeholder="at least 6 characters"
                                 value={password}
                                 placeholderTextColor={COLORS.placeholderText}
                                 onChangeText={setPassword}
