@@ -4,6 +4,7 @@ import SafeScreen from "../components/SafeScreen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import Toast from "react-native-toast-message";
 
 
 export default function RootLayout() {
@@ -35,6 +36,7 @@ export default function RootLayout() {
         </Stack>
       </SafeScreen> 
       <StatusBar style="auto"/>
+      <Toast/>
       
     </SafeAreaProvider>
   );

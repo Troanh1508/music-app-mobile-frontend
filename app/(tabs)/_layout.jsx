@@ -29,13 +29,13 @@ export default function TabLayout() {
             <Ionicons name="home-outline" color={color} size={size} />
             ),
         }}/>
-        <Tabs.Screen name="search" options={{title:"Search",
+        <Tabs.Screen name="(search)" options={{title:"Search",
             tabBarIcon: ({color, size}) => (
             <Ionicons name="search-outline" color={color} size={size} />
             ),
         }} />
 
-        <Tabs.Screen name="library" options={{title:"Favorite",
+        <Tabs.Screen name="(library)" options={{title:"Your Library",
             tabBarIcon: ({color, size}) => (
             <Ionicons name="library-outline" color={color} size={size} />
             ),
