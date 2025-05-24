@@ -19,4 +19,5 @@ export const useMusicStore = create((set) => ({
             set({error: error.message, isLoading: false});
         }
     },
+    
 }));

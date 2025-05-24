@@ -3,7 +3,7 @@ import React from 'react'
 import styles from "../assets/styles/profile.styles";
 import COLORS from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '../store/useAuthStore';
 
 export default function LogoutButton() {
 

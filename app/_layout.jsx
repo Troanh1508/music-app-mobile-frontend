@@ -3,7 +3,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import SafeScreen from "../components/SafeScreen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 
 export default function RootLayout() {
@@ -34,7 +34,7 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)"/>
         </Stack>
       </SafeScreen> 
-      <StatusBar style="dark"/>
+      <StatusBar style="auto"/>
       
     </SafeAreaProvider>
   );

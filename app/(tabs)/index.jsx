@@ -3,6 +3,7 @@ import styles from '../../assets/styles/home.styles';
 import { useState, useEffect, use } from 'react';
 import { Image } from 'expo-image';
 import { useMusicStore } from '../../store/useMusicStore';
+import { Link } from 'expo-router';
 
 export default function Home() {
     const [loading, setLoading] = useState(true);
@@ -14,12 +15,14 @@ export default function Home() {
         fetchSongs();
     }, []);
 
-    const renderItem = ({ item }) => (
-        <View style={styles.songCard}>
-                <Image source={item.imageUrl } style={styles.songImage}/>
-                <Text style={styles.songTitle}>
-                     {item.title} 
-                </Text>
+    const renderSongItem = ({ item }) => (
+        <View style={styles.Card}>
+                <Link href={`(tabs)/album/${item.album._id}`}>
+                    <Image source={item.imageUrl } style={styles.Image}/>
+                    <Text style={styles.Title}>
+                        {item.title} 
+                    </Text>
+                </Link>
                 <Text style={styles.caption}>
                     {item.artist.name}
                 </Text>
@@ -30,7 +33,7 @@ export default function Home() {
     <View style={ styles.container }>
         <FlatList
         data={songs}
-        renderItem={renderItem}
+        renderItem={renderSongItem}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
         horizontal={true}

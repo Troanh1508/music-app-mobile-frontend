@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     textAlign: "center",
   },
-  songCard: {
+  Card: {
     paddingHorizontal: 5,
     maxWidth: 150,
   },
-  songHeader: {
+  Header: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -58,19 +58,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: COLORS.textPrimary,
   },
-  songImageContainer: {
+  ImageContainer: {
     width: "100%",
     height: "100%",
   },
-  songImage: {
+  Image: {
     width: 130,
     height: 130,
     objectFit: "contain",
   },
-  songDetails: {
+  Details: {
     padding: 4,
   },
-  songTitle: {
+  Title: {
     fontSize: 16,
     fontWeight: "700",
     color: COLORS.textPrimary,
