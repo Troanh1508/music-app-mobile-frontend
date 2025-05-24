@@ -2,7 +2,7 @@ import { View, Text, FlatList } from 'react-native';
 import styles from '../../assets/styles/home.styles';
 import { useState, useEffect, use } from 'react';
 import { Image } from 'expo-image';
-import { useMusicStore } from '../../store/musicStore';
+import { useMusicStore } from '../../store/useMusicStore';
 
 export default function Home() {
     const [loading, setLoading] = useState(true);

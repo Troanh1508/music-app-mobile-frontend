@@ -5,7 +5,7 @@ import styles from '../../assets/styles/login.styles';
 import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../../constants/colors';
 import { Link } from 'expo-router';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { Alert } from 'react-native';
 
 

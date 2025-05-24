@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import COLORS from '../../constants/colors';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { Alert } from 'react-native';
 
 export default function Signup() {
