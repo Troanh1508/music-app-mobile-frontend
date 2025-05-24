@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 
-export default function AlbumPage() {
+export default function AlbumScreen() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
   return (

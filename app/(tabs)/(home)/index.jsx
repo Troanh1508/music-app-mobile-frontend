@@ -1,8 +1,8 @@
 import { View, Text, FlatList } from 'react-native';
-import styles from '../../assets/styles/home.styles';
+import styles from '../../../assets/styles/home.styles';
 import { useState, useEffect, use } from 'react';
 import { Image } from 'expo-image';
-import { useMusicStore } from '../../store/useMusicStore';
+import { useMusicStore } from '../../../store/useMusicStore';
 import { Link } from 'expo-router';
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
 
     const renderSongItem = ({ item }) => (
         <View style={styles.Card}>
-                <Link href={`(tabs)/album/${item.album._id}`}>
+                <Link href={`(tabs)/(home)/album/${item.album._id}`}>
                     <Image source={item.imageUrl } style={styles.Image}/>
                     <Text style={styles.Title}>
                         {item.title} 
