@@ -22,11 +22,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
   },
+  pageHeader: {
+    padding: 20,
+    fontSize: 20,
+    fontWeight: "bold",
+    color: COLORS.textPrimary,
+    fontFamily: "JetBrainsMono-Medium",
+  },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 19,
     fontFamily: "JetBrainsMono-Medium",
     letterSpacing: 0.5,
-    color: COLORS.primary,
+    color: COLORS.textPrimary,
     marginBottom: 8,
   },
   headerSubtitle: {
@@ -72,7 +79,7 @@ const styles = StyleSheet.create({
   },
   Title: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: "500",
     color: COLORS.textPrimary,
     flexWrap: "wrap",
     maxWidth: "100%",
@@ -84,7 +91,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 14,
-    color: COLORS.textDark,
+    color: COLORS.textSecondary,
     marginBottom: 8,
     lineHeight: 20,
   },

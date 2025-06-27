@@ -1,4 +1,4 @@
-import { Stack, useSegments, useRouter } from "expo-router";
+import { Stack, useSegments, useRouter, SplashScreen } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import SafeScreen from "../components/SafeScreen";
 import { StatusBar } from "expo-status-bar";
@@ -6,13 +6,13 @@ import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import Toast from "react-native-toast-message";
 
-
 export default function RootLayout() {
 
   const router = useRouter();
-  const segments = useSegments();
+  const segments = useSegments(); 
 
   const { checkAuth, user, token } = useAuthStore();
+
 
   useEffect(() => {
     checkAuth();
@@ -35,7 +35,8 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)"/>
         </Stack>
       </SafeScreen> 
-      <StatusBar style="auto"/>
+      <StatusBar style="light"/>
+      
       <Toast/>
       
     </SafeAreaProvider>

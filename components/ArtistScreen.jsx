@@ -18,7 +18,7 @@ export default function ArtistScreen() {
             />
         </View>
         <View>
-            <Text>AlbumPage for ID: {id}</Text>
+            <Text>Artist Page for ID: {id}</Text>
         </View>
     </ScrollView>
   )
