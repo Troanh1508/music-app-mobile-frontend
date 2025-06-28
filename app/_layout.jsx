@@ -5,6 +5,8 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import Toast from "react-native-toast-message";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { AudioPlayerProvider } from '@/store/AudioPlayerProvider';
 
 export default function RootLayout() {
 
@@ -28,17 +30,30 @@ export default function RootLayout() {
   }, [user, token, segments]);
 
   return ( 
-    <SafeAreaProvider>
-      <SafeScreen>
-        <Stack screenOptions={{headerShown: false}}>
-          <Stack.Screen name="(tabs)"/>
-          <Stack.Screen name="(auth)"/>
-        </Stack>
-      </SafeScreen> 
-      <StatusBar style="light"/>
-      
-      <Toast/>
-      
-    </SafeAreaProvider>
+    <AudioPlayerProvider>
+      <SafeAreaProvider>
+        <GestureHandlerRootView>
+          <SafeScreen>
+            <Stack screenOptions={{headerShown: false}}>
+              <Stack.Screen name="(tabs)"/>
+              <Stack.Screen name="(auth)"/>
+              <Stack.Screen
+                name="player"
+                options={{
+                  presentation: 'card',
+                  gestureEnabled: true,
+                  gestureDirection: 'vertical',
+                  animationDuration: 400,
+                  headerShown: false,
+                }}
+              />
+            </Stack>
+          </SafeScreen> 
+          <StatusBar style="light"/>
+        </GestureHandlerRootView>
+        <Toast/>
+        
+      </SafeAreaProvider>
+    </AudioPlayerProvider>
   );
 }

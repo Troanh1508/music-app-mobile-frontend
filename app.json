@@ -36,7 +36,8 @@
         }
       ],
       "expo-web-browser",
-      "expo-audio"
+      "expo-audio",
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true
