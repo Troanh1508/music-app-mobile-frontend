@@ -96,6 +96,9 @@ export default function Home() {
             </View>
 
             <View style = {{ flex: 1}}>
+                <Text style={ styles.headerTitle }>
+                    New Songs
+                </Text>
                 <View style={ styles.container }>
                     <FlatList
                     data={songs}

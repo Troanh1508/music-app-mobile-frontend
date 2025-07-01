@@ -1,35 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { colors, fontSize } from '@/constants/tokens'
-import { formatSecondsToMinutes } from '@/helpers/miscellaneous'
+import { formatTime } from '@/helpers/miscellaneous'
 import { StyleSheet, Text, View, ViewProps } from 'react-native'
 import Slider from '@react-native-community/slider';
-import { useSharedAudioPlayer } from '@/store/AudioPlayerProvider'
 import { useAudioQueueStore } from '@/store/useAudioQueueStore';
+import { AudioPro, useAudioPro } from 'react-native-audio-pro';
 
 
 export const PlayerSlider = ({ style }) => {
-    const player = useSharedAudioPlayer();
-	const { queue, currentIndex, isPlaying, play, pause, next, prev } = useAudioQueueStore();
-	// const position = player?.currentTime ?? 0;
-    const duration = player?.duration ?? 1;
-	const [position, setPosition] = useState(0);
+	const { queue } = useAudioQueueStore();
+	const { position, duration, state, playingTrack, playbackSpeed, volume, error } = useAudioPro();
 
-	useEffect(() => {
-		// Set up a polling interval to update position
-		const interval = setInterval(() => {
-			if (player?.currentTime != null) {
-				setPosition(player.currentTime);
-			}
-			if (player.currentTime >= player.duration && player.duration > 0) {
-				next();
-			}
-		}, 500); // update every 0.5s
-
-		return () => clearInterval(interval); // clean up on unmount
-	}, [player]);
-
-	const trackElapsedTime = formatSecondsToMinutes(position)
-	const trackTotalTime = formatSecondsToMinutes(duration)
+	const trackElapsedTime = formatTime(position)
+	const trackRemainingTime = formatTime(Math.max(0, duration - position))
 
 	return (
 		<View style={style}>
@@ -42,10 +25,9 @@ export const PlayerSlider = ({ style }) => {
                 minimumTrackTintColor="#FFFFFF"
                 maximumTrackTintColor= {colors.maximumTrackTintColor}
 				onSlidingComplete={async (value) => {
-					if (player?.seekTo) {
-						await player.seekTo(value);
-						setPosition(value); // update position manually after seeking
-					}
+					
+						AudioPro.seekTo(value);
+					
 				}}
 			/>
 
@@ -53,7 +35,7 @@ export const PlayerSlider = ({ style }) => {
 				<Text style={styles.timeText}>{trackElapsedTime}</Text>
 
 				<Text style={styles.timeText}>
-					{'-'} {trackTotalTime}
+					{'-'} {trackRemainingTime}
 				</Text>
 			</View>
 		</View>

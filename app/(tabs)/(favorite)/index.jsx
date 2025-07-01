@@ -10,7 +10,9 @@ import { unknownArtistImageUri, unknownTrackImageUri } from '@/constants/images'
 import { useNavigationSearch } from '@/hooks/useNavigationSearch';
 import { useAudioQueueStore } from '@/store/useAudioQueueStore';
 import { colors, fontSize } from '@/constants/tokens';
-
+import { mapSongsToQueue } from '@/helpers/mapSongsToQueue';
+import { AudioPro, useAudioPro } from 'react-native-audio-pro';
+import COLORS from '@/constants/colors';
 
 export default function Favorite() {
 
@@ -25,32 +27,29 @@ export default function Favorite() {
   const { user } = useAuthStore(); // <-- get user from auth store
   // console.log("User in Favorite tab: ", user);
 
+  const { queue, setQueue, currentIndex } = useAudioQueueStore();
+  const { playingTrack, state } = useAudioPro();
+
   useEffect(() => {
     fetchFavoriteSongs(user._id);
   }, []);
 
-  const { setQueue, currentIndex } = useAudioQueueStore();
+  
 
   
 
   // console.log("Favorite songs: ", favoriteSongs);
 
   const renderSongItem = ({ item, index }) => {
-    const isActiveTrack = currentIndex === index;
+    const isActiveTrack = item._id === queue[currentIndex]?.id;
     return (
     // <Link href={`(tabs)/(favorite)/album/${item.album._id}`}> 
     <Pressable
       onPress={() => {
         // Map favoriteSongs to audio sources for the queue
-        const queue = favoriteSongs.map(song => ({
-          uri: song.audioUrl,
-          title: song.title,
-          artist: song.artist, // or song.artist.name if populated
-          imageUrl: song.imageUrl,
-          duration: song.duration,
-          // add other fields as needed
-        }));
-        setQueue(queue, index);
+        const queue = mapSongsToQueue(favoriteSongs);
+        setQueue(queue, index); 
+        AudioPro.play(queue[index]);// Set the queue and start playing from the clicked song
       }}
     >
       <View style={styles.trackItemContainer}>
@@ -72,7 +71,7 @@ export default function Favorite() {
 							numberOfLines={1}
 							style={{
 								...styles.trackTitleText,
-								color: isActiveTrack ? colors.primary : colors.text,
+								color: isActiveTrack ? COLORS.primary : colors.text,
 							}}
 						>
 							{item.title}

@@ -6,19 +6,21 @@ import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import Toast from "react-native-toast-message";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { AudioPlayerProvider } from '@/store/AudioPlayerProvider';
+import { setupAudioPro } from '@/store/player-service';
+
+setupAudioPro(); // Initialize audio player settings
 
 export default function RootLayout() {
 
   const router = useRouter();
-  const segments = useSegments(); 
+  const segments = useSegments();
 
   const { checkAuth, user, token } = useAuthStore();
 
 
   useEffect(() => {
     checkAuth();
-  },[]);
+  }, []);
 
   // handle navigation based on auth state
   useEffect(() => {
@@ -29,31 +31,28 @@ export default function RootLayout() {
     else if (isSignedIn && inAuthScreen) setImmediate(() => { router.replace("/(tabs)"); });
   }, [user, token, segments]);
 
-  return ( 
-    <AudioPlayerProvider>
-      <SafeAreaProvider>
-        <GestureHandlerRootView>
-          <SafeScreen>
-            <Stack screenOptions={{headerShown: false}}>
-              <Stack.Screen name="(tabs)"/>
-              <Stack.Screen name="(auth)"/>
-              <Stack.Screen
-                name="player"
-                options={{
-                  presentation: 'card',
-                  gestureEnabled: true,
-                  gestureDirection: 'vertical',
-                  animationDuration: 400,
-                  headerShown: false,
-                }}
-              />
-            </Stack>
-          </SafeScreen> 
-          <StatusBar style="light"/>
-        </GestureHandlerRootView>
-        <Toast/>
-        
-      </SafeAreaProvider>
-    </AudioPlayerProvider>
+  return (
+    <SafeAreaProvider>
+      <GestureHandlerRootView>
+        <SafeScreen>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(auth)" />
+            <Stack.Screen
+              name="player"
+              options={{
+                presentation: 'card',
+                gestureEnabled: true,
+                gestureDirection: 'vertical',
+                animationDuration: 400,
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </SafeScreen>
+        <StatusBar style="light" />
+      </GestureHandlerRootView>
+      <Toast />
+    </SafeAreaProvider>
   );
 }

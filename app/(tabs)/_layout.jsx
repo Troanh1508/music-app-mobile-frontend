@@ -1,10 +1,10 @@
 import { Stack, Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons';
-import COLORS from '../../constants/colors';
+import COLORS from '@/constants/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { StyleSheet } from 'react-native';
-import FloatingPlayer1 from '@/components/FloatingPlayer1';
+import FloatingPlayer from '@/components/FloatingPlayer';
 
 export default function TabLayout() {
     const insets = useSafeAreaInsets();
@@ -63,7 +63,7 @@ export default function TabLayout() {
             }} />
         </Tabs>
 
-        <FloatingPlayer1
+        <FloatingPlayer
                     style={{
                         position: 'absolute',
                         left: 8,

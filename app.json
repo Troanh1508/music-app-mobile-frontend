@@ -37,7 +37,16 @@
       ],
       "expo-web-browser",
       "expo-audio",
-      "expo-build-properties"
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
