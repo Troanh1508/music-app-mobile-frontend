@@ -13,6 +13,7 @@ import { colors, fontSize } from '@/constants/tokens';
 import { mapSongsToQueue } from '@/helpers/mapSongsToQueue';
 import { AudioPro, useAudioPro } from 'react-native-audio-pro';
 import COLORS from '@/constants/colors';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function Favorite() {
 
@@ -109,7 +110,7 @@ export default function Favorite() {
     setRefreshing(false);
   };
 
-  if (loading && !refreshing) return <ActivityIndicator />;
+  if (loading && !refreshing) return <LoadingSpinner message="Loading..." />;
 
 
   return (

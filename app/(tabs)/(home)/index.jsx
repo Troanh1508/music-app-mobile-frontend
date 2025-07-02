@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ScrollView, Pressable, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, ScrollView, Pressable, RefreshControl} from 'react-native';
 import styles from '../../../assets/styles/home.styles';
 import { useState, useEffect } from 'react';
 import { Image } from 'expo-image';
@@ -7,6 +7,7 @@ import { Link } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuthStore } from '../../../store/useAuthStore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 export default function Home() {
@@ -88,7 +89,7 @@ export default function Home() {
         );
     }
 
-    if (loading && !refreshing) return <ActivityIndicator/>;
+    if (loading && !refreshing) return <LoadingSpinner message="Loading..." />;
 
     return (
 
