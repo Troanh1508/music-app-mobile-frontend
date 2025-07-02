@@ -1,19 +1,22 @@
 import { View, Text, Pressable, FlatList, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Entypo, Ionicons } from '@expo/vector-icons'
 import { useMusicStore } from '../../../store/useMusicStore';
 import { useState, useEffect, use } from 'react';
 import { Image } from 'expo-image';
-import { Link } from 'expo-router';
 import { useAuthStore } from '../../../store/useAuthStore';
 import { unknownArtistImageUri, unknownTrackImageUri } from '@/constants/images';
 import { useNavigationSearch } from '@/hooks/useNavigationSearch';
 import { useAudioQueueStore } from '@/store/useAudioQueueStore';
 import { colors, fontSize } from '@/constants/tokens';
 import { mapSongsToQueue } from '@/helpers/mapSongsToQueue';
-import { AudioPro, useAudioPro } from 'react-native-audio-pro';
+import { AudioPro, AudioProState, useAudioPro } from 'react-native-audio-pro';
 import COLORS from '@/constants/colors';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { LoaderKitView, } from 'react-native-loader-kit';
+import { TrackShortcutsMenu } from '@/components/TrackShortcutsMenu';
+import { StopPropagation } from '@/components/utils/StopPropagation';
+
 
 export default function Favorite() {
 
@@ -45,6 +48,10 @@ export default function Favorite() {
     loadData();
   }, []);
 
+  const ItemDivider = () => (
+    <View style={{ ...styles.itemSeparator, marginVertical: 9, marginLeft: 60 }} />
+  )
+
 
 
 
@@ -65,7 +72,7 @@ export default function Favorite() {
       >
         <View style={styles.trackItemContainer}>
           <View>
-            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.trackArtworkImage, opacity: isActiveTrack ? 0.6 : 1 }} />
+            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.trackArtworkImage, }} />
           </View>
 
           <View
@@ -77,22 +84,49 @@ export default function Favorite() {
             }}
           >
             {/* Track title + artist */}
-            <View style={{ width: '100%' }}>
-              <Text
-                numberOfLines={1}
-                style={{
-                  ...styles.trackTitleText,
-                  color: isActiveTrack ? COLORS.primary : colors.text,
-                }}
-              >
-                {item.title}
-              </Text>
+            <View style={{
+              width: '100%', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+              <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                  {isActiveTrack &&
+                    ((state === AudioProState.PLAYING) ? (
+                      <LoaderKitView
+                        style={{ width: 20, height: 20 }}
+                        name={'AudioEqualizer'}
+                        color={COLORS.primary}
+                      />
+                    ) : (
+                      null
+                    ))}
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      ...styles.trackTitleText,
+                      color: isActiveTrack ? COLORS.primary : colors.text,
+                      flex: 1,
+                    }}
+                  >
+                    {item.title}
+                  </Text>
 
-              {item.artist.name && (
-                <Text numberOfLines={1} style={styles.trackArtistText}>
-                  {item.artist.name}
-                </Text>
-              )}
+                </View>
+
+                {item.artist.name && (
+                  <Text numberOfLines={1} style={styles.trackArtistText}>
+                    {item.artist.name}
+                  </Text>
+                )}
+              </View>
+
+
+              <StopPropagation>
+                <TrackShortcutsMenu track={item}>
+                  <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
+                </TrackShortcutsMenu>
+              </StopPropagation>
+
             </View>
 
 
@@ -133,6 +167,18 @@ export default function Favorite() {
             data={favoriteSongs}
             renderItem={({ item, index }) => renderSongItem({ item, index })}
             keyExtractor={(item) => item._id}
+            ItemSeparatorComponent={ItemDivider}
+            ListFooterComponent={ItemDivider}
+            ListEmptyComponent={
+              <View>
+                <Text style={styles.emptyContentText}>No favorite songs yet</Text>
+
+                <Image
+                  source={unknownTrackImageUri}
+                  style={styles.emptyContentImage}
+                />
+              </View>
+            }
             contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
             scrollEnabled={false}
           />
@@ -179,5 +225,15 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 14,
     marginTop: 4,
+  },
+  itemSeparator: {
+    borderColor: colors.textMuted,
+    borderWidth: StyleSheet.hairlineWidth,
+    opacity: 0.3,
+  },
+  emptyContentText: {
+    color: colors.textMuted,
+    textAlign: 'center',
+    marginTop: 20,
   },
 })

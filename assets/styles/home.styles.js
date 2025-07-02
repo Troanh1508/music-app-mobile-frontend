@@ -5,7 +5,7 @@ import COLORS from "../../constants/colors";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    maxHeight: "40%",
+    maxHeight: "30%",
     backgroundColor: COLORS.background,
   },
   loadingContainer: {
@@ -43,8 +43,14 @@ const styles = StyleSheet.create({
   },
   Card: {
     paddingHorizontal: 5,
-    maxWidth: 150,
-    width: 150, // Add this line to ensure the card has a fixed width
+    width: 150,
+  },
+  ArtistImage: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    objectFit: "cover",
+
   },
   Header: {
     flexDirection: "row",
@@ -81,8 +87,9 @@ const styles = StyleSheet.create({
   Title: {
     fontSize: 16,
     fontWeight: "500",
+    width: 120,
     color: COLORS.textPrimary,
-    maxWidth: "100%",
+    
     
   },
   ratingContainer: {

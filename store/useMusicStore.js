@@ -8,6 +8,8 @@ export const useMusicStore = create((set) => ({
     favoriteSongs: [],
     isLoading: false,
     error: null,
+    artists: [],
+    songsByArtist: [],
     
 
     fetchSongs: async () => {
@@ -70,6 +72,32 @@ export const useMusicStore = create((set) => ({
             if (!response.ok) throw new Error(data.message || "Failed to fetch albums");
 
             set({albums: data, isLoading: false});
+        } catch (error) {
+            set({error: error.message, isLoading: false});
+        }
+    },
+
+    fetchArtists: async () => {
+        set({isLoading: true});
+        try {
+            const response = await fetch(`${API_URL}/api/artists`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Failed to fetch artists");
+
+            set({artists: data, isLoading: false});
+        } catch (error) {
+            set({error: error.message, isLoading: false});
+        }
+    },
+
+    fetchSongsByArtistId: async (artistId) => {
+        set({isLoading: true});
+        try {
+            const response = await fetch(`${API_URL}/api/songs/artist/${artistId}`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Failed to fetch songs by artist");
+
+            set({songsByArtist: data, isLoading: false});
         } catch (error) {
             set({error: error.message, isLoading: false});
         }

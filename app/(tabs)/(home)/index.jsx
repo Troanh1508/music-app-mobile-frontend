@@ -1,11 +1,10 @@
-import { View, Text, FlatList, ScrollView, Pressable, RefreshControl} from 'react-native';
-import styles from '../../../assets/styles/home.styles';
+import { View, Text, FlatList, ScrollView, Pressable, RefreshControl } from 'react-native';
+import styles from '@/assets/styles/home.styles';
 import { useState, useEffect } from 'react';
 import { Image } from 'expo-image';
-import { useMusicStore } from '../../../store/useMusicStore';
+import { useMusicStore } from '@/store/useMusicStore';
 import { Link } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useAuthStore } from '../../../store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
@@ -13,7 +12,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 export default function Home() {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    const { fetchSongs, songs, albums, fetchAlbums } = useMusicStore();
+    const { fetchSongs, songs, albums, fetchAlbums, artists, fetchArtists } = useMusicStore();
     const { user } = useAuthStore(); // <-- get user from auth store
 
 
@@ -22,6 +21,7 @@ export default function Home() {
             setLoading(true);
             await fetchSongs();
             await fetchAlbums();
+            await fetchArtists();
 
         } catch (error) {
             console.error("Error loading data:", error);
@@ -37,11 +37,13 @@ export default function Home() {
         <View style={styles.Card}>
             <Link href={`(tabs)/(home)/album/${item.album._id}`}>
                 <Image source={item.imageUrl} style={styles.Image} />
-                <Text numberOfLines={1} style={styles.Title}>
-                    {item.title}
-                </Text>
+                <View>
+                    <Text numberOfLines={1} style={styles.Title}>
+                        {item.title}
+                    </Text>
+                </View>
             </Link>
-            <Text style={styles.caption}>
+            <Text numberOfLines={1} style={styles.caption}>
                 {item.artist.name}
             </Text>
         </View>
@@ -51,17 +53,32 @@ export default function Home() {
         <View style={styles.Card}>
             <Link href={`(tabs)/(home)/album/${item._id}`}>
                 <Image source={item.imageUrl} style={styles.Image} />
-                <Text style={styles.Title}>
-                    {item.title}
-                </Text>
+                <View>
+                    <Text numberOfLines={1} style={styles.Title}>
+                        {item.title}
+                    </Text>
+                </View>
             </Link>
-            <Text style={styles.caption}>
+            <Text numberOfLines={1} style={styles.caption}>
                 {item.artist.name}
             </Text>
         </View>
     );
 
-    
+    const renderArtistItem = ({ item }) => (
+        <View style={styles.Card}>
+            <Link href={`(tabs)/(home)/artist/${item._id}`}>
+                <Image source={item.imageUrl} style={styles.ArtistImage} />
+                <View>
+                    <Text numberOfLines={1} style={{ ...styles.Title, textAlign: 'center' }}>
+                        {item.name}
+                    </Text>
+                </View>
+            </Link>
+        </View>
+    );
+
+
 
     const greetingMessage = () => {
         const currentTime = new Date().getHours();
@@ -94,7 +111,7 @@ export default function Home() {
     return (
 
         <ScrollView style={{ backgroundColor: "black", flex: 1 }}
-            contentContainerStyle={{ padding: 20 }}
+            contentContainerStyle={{ paddingTop: 10, paddingBottom: 135 }}
             refreshControl={
                 <RefreshControl
                     refreshing={refreshing}
@@ -125,8 +142,9 @@ export default function Home() {
                 </Text>
             </View>
 
+
             <View style={{ flex: 1 }}>
-                <Text style={styles.headerTitle}>
+                <Text style={{ ...styles.headerTitle, marginLeft: 15, marginTop: 20 }}>
                     New Songs
                 </Text>
                 <View style={styles.container}>
@@ -140,13 +158,27 @@ export default function Home() {
                     />
                 </View>
 
-                <Text style={styles.headerTitle}>
+                <Text style={{ ...styles.headerTitle, marginLeft: 15 }}>
                     New Albums
                 </Text>
                 <View style={styles.container}>
                     <FlatList
                         data={albums}
                         renderItem={renderAlbumItem}
+                        keyExtractor={(item) => item._id}
+                        contentContainerStyle={styles.listContainer}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+                <Text style={{ ...styles.headerTitle, marginLeft: 15 }}>
+                    New Artists
+                </Text>
+
+                <View style={styles.container}>
+                    <FlatList
+                        data={artists}
+                        renderItem={renderArtistItem}
                         keyExtractor={(item) => item._id}
                         contentContainerStyle={styles.listContainer}
                         horizontal={true}

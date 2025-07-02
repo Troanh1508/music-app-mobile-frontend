@@ -1,9 +1,9 @@
 import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAudioQueueStore } from '@/store/useAudioQueueStore'
 import { Image } from 'expo-image'
 import { colors } from '@/constants/tokens'
-import { FontAwesome6, Ionicons } from '@expo/vector-icons'
+import { FontAwesome, FontAwesome6, Ionicons } from '@expo/vector-icons'
 import { unknownTrackImageUri } from '@/constants/images'
 import { PlayerSlider } from '@/components/PlayerSlider'
 import { AudioPro, useAudioPro } from 'react-native-audio-pro';
@@ -14,16 +14,18 @@ import {
   setCurrentTrackIndex,
   setProgressInterval,
 } from '@/store/player-service'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import COLORS from '@/constants/colors'
 
 
 
 export default function PlayerScreen() {
 
-  const { queue, currentIndex, setCurrentIndex} = useAudioQueueStore();
+  const { queue, currentIndex, setCurrentIndex } = useAudioQueueStore();
   const [progressInterval, setLocalProgressInterval] = useState(getProgressInterval());
   const currentTrack = queue[currentIndex];
   const { position, duration, state, playingTrack, playbackSpeed, volume, error } = useAudioPro();
-
+  const { top, bottom } = useSafeAreaInsets()
   // Reset needsTrackLoad when the track actually changes
   useEffect(() => {
     if (playingTrack?.id === currentTrack?.id) {
@@ -150,60 +152,107 @@ export default function PlayerScreen() {
     setLocalProgressInterval(newInterval);
   };
 
+  const isFavorite = 1;
+
 
   return (
     <View style={styles.container}>
       {/* Artwork */}
-      <Image
-        source={{ uri: currentTrack.artwork ?? unknownTrackImageUri }}
-        style={styles.artwork}
-      />
-      {/* Title */}
-      <Text style={styles.title}>{currentTrack.title || "unknown title"}</Text>
-      {/* Artist */}
-      <Text style={styles.artist}>{currentTrack.artist?.name || currentTrack.artist || "unknown artist"}</Text>
-      {/* Controls */}
-      <PlayerSlider style={{ marginTop: 0 }} />
-      <View style={styles.controls}>
-
-        <TouchableOpacity activeOpacity={0.7} onPress={handlePrevious}>
-          <Ionicons name="play-skip-back" size={30} color={colors.text} />
-        </TouchableOpacity>
-        <View style={styles.trackControlsContainer}>
-
-          
-            <TouchableOpacity onPress={handlePlayPause}>
-              <FontAwesome6 name={state === AudioProState.PLAYING ? 'pause' : 'play'} size={48} color={colors.text} />
-            </TouchableOpacity>
-          
-
-
-
-          {/* <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={isPlaying ? pause : play}
-          >
-            <FontAwesome6 name={isPlaying ? 'pause' : 'play'} size={48} color={colors.text} />
-          </TouchableOpacity> */}
+      <View style={{ flex: 1, marginTop: top, marginBottom: bottom }}>
+        <View style={styles.artworkImageContainer}>
+          <Image
+            source={{ uri: currentTrack.artwork ?? unknownTrackImageUri }}
+            contentFit='cover'
+            style={styles.artwork}
+          />
         </View>
-        <TouchableOpacity activeOpacity={0.7} onPress={handleNext}>
-          <Ionicons name="play-skip-forward" size={30} color={colors.text} />
-        </TouchableOpacity>
+
+        <View style={{ flex: 1 }}>
+          <View style={{ marginTop: '20' }}>
+            <View style={{ height: 60 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+
+
+                {/* Title */}
+                <Text style={styles.title}>
+                  {currentTrack.title || "unknown title"}
+                </Text>
+                <FontAwesome
+                  name={isFavorite ? 'heart' : 'heart-o'}
+                  size={22}
+                  color={isFavorite ? COLORS.primary : COLORS.white}
+                  style={{ marginHorizontal: 14 }}
+                // onPress={toggleFavorite}
+                />
+              </View>
+              {/* Artist */}
+
+              <Text numberOfLines={1} style={[styles.artist, { marginTop: 6 }]}>
+                {currentTrack.artist?.name || currentTrack.artist || "unknown artist"}
+              </Text>
+            </View>
+            {/* Controls */}
+            <PlayerSlider style={{ marginTop: 32 }} />
+
+            <View style={{ marginTop: 40, width: '100%' }}>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+              }}>
+
+
+                <TouchableOpacity activeOpacity={0.7} onPress={handlePrevious}>
+                  <Ionicons name="play-skip-back" size={30} color={colors.text} />
+                </TouchableOpacity>
+                <View style={styles.trackControlsContainer}>
+
+
+                  <TouchableOpacity onPress={handlePlayPause}>
+                    <FontAwesome6 name={state === AudioProState.PLAYING ? 'pause' : 'play'} size={48} color={colors.text} />
+                  </TouchableOpacity>
+
+                </View>
+                <TouchableOpacity activeOpacity={0.7} onPress={handleNext}>
+                  <Ionicons name="play-skip-forward" size={30} color={colors.text} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+          </View>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000' },
+  container: { flex: 1, paddingHorizontal: 24, backgroundColor: '#000' },
   loadingContainer: {
     width: 80,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  artwork: { width: 250, height: 250, borderRadius: 16, marginBottom: 32 },
-  title: { color: '#fff', fontSize: 28, fontWeight: 'bold', marginBottom: 8 },
+  artwork: { width: '100%', height: '100%', borderRadius: 12 },
+  title: { color: '#fff', fontSize: 22, fontWeight: 'bold', marginBottom: 8 },
   artist: { color: '#aaa', fontSize: 20, marginBottom: 32 },
   controls: { flexDirection: 'row', alignItems: 'center', gap: 32 },
+  artworkImageContainer: {
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 11.0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: '45%',
+  },
 });
