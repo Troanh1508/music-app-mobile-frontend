@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
-import AlbumScreen from '../../../../components/AlbumScreen';
-import ArtistScreen from '../../../../components/ArtistScreen';
+import AlbumScreen from '@/components/AlbumScreen';
+import ArtistScreen from '@/components/ArtistScreen';
 
 export default function DetailPage() {
   const { type, id } = useLocalSearchParams();

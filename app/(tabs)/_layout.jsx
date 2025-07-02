@@ -68,7 +68,7 @@ export default function TabLayout() {
                         position: 'absolute',
                         left: 8,
                         right: 8,
-                        bottom: 78,
+                        bottom: 70,
                     }}
         />
     </>

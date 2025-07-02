@@ -1,12 +1,11 @@
 import { View, Text, Pressable, FlatList, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, Ionicons } from '@expo/vector-icons'
-import { useMusicStore } from '../../../store/useMusicStore';
+import { useMusicStore } from '@/store/useMusicStore';
 import { useState, useEffect, use } from 'react';
 import { Image } from 'expo-image';
-import { useAuthStore } from '../../../store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import { unknownArtistImageUri, unknownTrackImageUri } from '@/constants/images';
-import { useNavigationSearch } from '@/hooks/useNavigationSearch';
 import { useAudioQueueStore } from '@/store/useAudioQueueStore';
 import { colors, fontSize } from '@/constants/tokens';
 import { mapSongsToQueue } from '@/helpers/mapSongsToQueue';
@@ -20,11 +19,6 @@ import { StopPropagation } from '@/components/utils/StopPropagation';
 
 export default function Favorite() {
 
-  const search = useNavigationSearch({
-    searchBarOptions: {
-      placeholder: 'Find in songs',
-    },
-  })
 
   const { fetchFavoriteSongs, favoriteSongs } = useMusicStore();
   const { user } = useAuthStore();

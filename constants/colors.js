@@ -11,6 +11,9 @@ const COLORS = {
   border: "#c8e6c9",
   white: "#ffffff",
   black: "#000000",
+  textLight: "#66BB6A",
+  card: "#FFFFFF",
+  shadow: "#000000",
 };
 
 export default COLORS;

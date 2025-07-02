@@ -5,7 +5,6 @@ import { Image } from 'expo-image';
 import { useMusicStore } from '@/store/useMusicStore';
 import { Link } from 'expo-router';
 import { useAuthStore } from '@/store/useAuthStore';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 
@@ -125,6 +124,7 @@ export default function Home() {
                     style={{
                         width: 40,
                         height: 40,
+                        marginLeft: 15,
                         borderRadius: 20,
                         contentFit: "cover",
                     }}

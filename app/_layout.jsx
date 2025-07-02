@@ -28,7 +28,7 @@ export default function RootLayout() {
     const isSignedIn = user && token;
 
     if (!isSignedIn && !inAuthScreen) setImmediate(() => { router.replace("/(auth)"); });
-    else if (isSignedIn && inAuthScreen) setImmediate(() => { router.replace("/(tabs)"); });
+    else if (isSignedIn && inAuthScreen) setImmediate(() => { router.replace("/(tabs)/(home)"); });
   }, [user, token, segments]);
 
   return (
