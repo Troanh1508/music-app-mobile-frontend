@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   Card: {
     paddingHorizontal: 5,
     maxWidth: 150,
+    width: 150, // Add this line to ensure the card has a fixed width
   },
   Header: {
     flexDirection: "row",
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: COLORS.textPrimary,
-    flexWrap: "wrap",
     maxWidth: "100%",
     
   },

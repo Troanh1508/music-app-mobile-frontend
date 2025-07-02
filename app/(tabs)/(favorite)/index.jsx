@@ -1,4 +1,4 @@
-import { View, Text, Pressable, FlatList, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Pressable, FlatList, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useMusicStore } from '../../../store/useMusicStore';
@@ -23,78 +23,106 @@ export default function Favorite() {
   })
 
   const { fetchFavoriteSongs, favoriteSongs } = useMusicStore();
-
-  const { user } = useAuthStore(); // <-- get user from auth store
-  // console.log("User in Favorite tab: ", user);
-
+  const { user } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const { queue, setQueue, currentIndex } = useAudioQueueStore();
   const { playingTrack, state } = useAudioPro();
 
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      await fetchFavoriteSongs(user._id);
+
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    fetchFavoriteSongs(user._id);
+    loadData();
   }, []);
 
-  
 
-  
+
+
 
   // console.log("Favorite songs: ", favoriteSongs);
 
   const renderSongItem = ({ item, index }) => {
     const isActiveTrack = item._id === queue[currentIndex]?.id;
     return (
-    // <Link href={`(tabs)/(favorite)/album/${item.album._id}`}> 
-    <Pressable
-      onPress={() => {
-        // Map favoriteSongs to audio sources for the queue
-        const queue = mapSongsToQueue(favoriteSongs);
-        setQueue(queue, index); 
-        AudioPro.play(queue[index]);// Set the queue and start playing from the clicked song
-      }}
-    >
-      <View style={styles.trackItemContainer}>
-        <View>
-          <Image source={item.imageUrl ?? unknownTrackImageUri} style={{...styles.trackArtworkImage, opacity: isActiveTrack ? 0.6 : 1}}/>
+      // <Link href={`(tabs)/(favorite)/album/${item.album._id}`}> 
+      <Pressable
+        onPress={() => {
+          // Map favoriteSongs to audio sources for the queue
+          const queue = mapSongsToQueue(favoriteSongs);
+          setQueue(queue, index);
+          AudioPro.play(queue[index]);// Set the queue and start playing from the clicked song
+        }}
+      >
+        <View style={styles.trackItemContainer}>
+          <View>
+            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.trackArtworkImage, opacity: isActiveTrack ? 0.6 : 1 }} />
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {/* Track title + artist */}
+            <View style={{ width: '100%' }}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...styles.trackTitleText,
+                  color: isActiveTrack ? COLORS.primary : colors.text,
+                }}
+              >
+                {item.title}
+              </Text>
+
+              {item.artist.name && (
+                <Text numberOfLines={1} style={styles.trackArtistText}>
+                  {item.artist.name}
+                </Text>
+              )}
+            </View>
+
+
+          </View>
         </View>
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {/* Track title + artist */}
-          <View style={{ width: '100%' }}>
-						<Text
-							numberOfLines={1}
-							style={{
-								...styles.trackTitleText,
-								color: isActiveTrack ? COLORS.primary : colors.text,
-							}}
-						>
-							{item.title}
-						</Text>
-
-						{item.artist.name && (
-							<Text numberOfLines={1} style={styles.trackArtistText}>
-								{item.artist.name}
-							</Text>
-						)}
-					</View>
-
-
-        </View>
-      </View>
-    </Pressable>
-    // </Link>
-  );
+      </Pressable>
+      // </Link>
+    );
   };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    // await sleep(2000);
+    await loadData();
+    setRefreshing(false);
+  };
+
+  if (loading && !refreshing) return <ActivityIndicator />;
 
 
   return (
-    <ScrollView style={{ backgroundColor: "black", flex: 1 }} contentContainerStyle={{ padding: 20 }}>
+    <ScrollView style={{ backgroundColor: "black", flex: 1 }}
+      contentContainerStyle={{ padding: 20 }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          tintColor={"white"}
+        />
+      }
+    >
       <Text style={styles.pageHeader}>
         Favorites
       </Text>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Button, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Image } from 'expo-image';
 import { unknownTrackImageUri } from '@/constants/images';
 import { colors } from '@/constants/tokens'
@@ -54,12 +54,20 @@ export default function FloatingPlayer({ style }) {
       </View>
 
       <View style={styles.trackControlsContainer}>
+
+  
+        {state === AudioProState.LOADING ? (
+						<View>
+							<ActivityIndicator size="large" color="#1EB1FC" />
+						</View>
+					) : (
         <TouchableOpacity
           activeOpacity={0.85}
           onPress={handlePlayPause}
         >
           <FontAwesome6 name={state === AudioProState.PLAYING ? 'pause' : 'play'} size={24} color={colors.text} />
         </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );
