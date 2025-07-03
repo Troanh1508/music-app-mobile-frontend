@@ -1,4 +1,4 @@
-import { View, Text, Pressable, FlatList, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, TextInput, Pressable, FlatList, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, Ionicons } from '@expo/vector-icons'
 import { useMusicStore } from '@/store/useMusicStore';
@@ -13,19 +13,26 @@ import { AudioPro, AudioProState, useAudioPro } from 'react-native-audio-pro';
 import COLORS from '@/constants/colors';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { LoaderKitView, } from 'react-native-loader-kit';
-import { TrackShortcutsMenu } from '@/components/TrackShortcutsMenu';
+import { SongShortcutsMenu } from '@/components/SongShortcutsMenu';
 import { StopPropagation } from '@/components/utils/StopPropagation';
+import { searchStyles } from '@/assets/styles/search.styles';
 
 
 export default function Favorite() {
 
 
   const { fetchFavoriteSongs, favoriteSongs } = useMusicStore();
+  const [searchQuery, setSearchQuery] = useState('');
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const { queue, setQueue, currentIndex } = useAudioQueueStore();
   const { playingTrack, state } = useAudioPro();
+
+  const filteredSongs = favoriteSongs.filter(song =>
+  song.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  (song.artist?.name?.toLowerCase().includes(searchQuery.toLowerCase()))
+);
 
   const loadData = async () => {
     try {
@@ -58,12 +65,13 @@ export default function Favorite() {
       // <Link href={`(tabs)/(favorite)/album/${item.album._id}`}> 
       <Pressable
         onPress={() => {
-          // Map favoriteSongs to audio sources for the queue
-          const queue = mapSongsToQueue(favoriteSongs);
+          
+          const queue = mapSongsToQueue(filteredSongs);
           setQueue(queue, index);
           AudioPro.play(queue[index]);// Set the queue and start playing from the clicked song
         }}
       >
+
         <View style={styles.trackItemContainer}>
           <View>
             <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.trackArtworkImage, }} />
@@ -116,9 +124,9 @@ export default function Favorite() {
 
 
               <StopPropagation>
-                <TrackShortcutsMenu track={item}>
+                <SongShortcutsMenu song={item}>
                   <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
-                </TrackShortcutsMenu>
+                </SongShortcutsMenu>
               </StopPropagation>
 
             </View>
@@ -153,19 +161,45 @@ export default function Favorite() {
       }
     >
       <Text style={styles.pageHeader}>
-        Favorites
+        Liked Songs
       </Text>
+      <View style={{ paddingVertical: 20 }}>
+        <View style={searchStyles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={20}
+            color={colors.textMuted}
+            style={searchStyles.searchIcon}
+          />
+          <TextInput
+            style={searchStyles.searchInput}
+            placeholder="Find in Liked Songs"
+            placeholderTextColor={colors.textMuted}
+            value={searchQuery}
+            onChangeText={(text) => {
+              setSearchQuery(text);
+            }}
+            returnKeyType="search"
+          />
+          {searchQuery.length > 0 && (
+            <Pressable onPress={() => setSearchQuery("")} style={searchStyles.clearButton}>
+              <Ionicons name="close-circle" size={20} color={colors.textMuted} />
+            </Pressable>
+          )}
+        </View>
+      </View>
+
       <View style={{ flex: 1 }}>
         <View>
           <FlatList
-            data={favoriteSongs}
+            data={filteredSongs}
             renderItem={({ item, index }) => renderSongItem({ item, index })}
             keyExtractor={(item) => item._id}
             ItemSeparatorComponent={ItemDivider}
             ListFooterComponent={ItemDivider}
             ListEmptyComponent={
               <View>
-                <Text style={styles.emptyContentText}>No favorite songs yet</Text>
+                <Text style={styles.emptyContentText}>No favorite songs</Text>
 
                 <Image
                   source={unknownTrackImageUri}
@@ -230,4 +264,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  pageHeader: {
+    color: colors.text,
+    fontWeight: 'bold',
+    fontSize: 25
+
+  }
 })

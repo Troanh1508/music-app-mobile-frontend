@@ -105,9 +105,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   trackArtist: {
-    color: '#fff',
+    color: colors.textMuted,
     fontSize: 14,
-    fontWeight: '300',
+    fontWeight: '400',
     paddingLeft: 10,
   },
   trackControlsContainer: {

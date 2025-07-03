@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     height: 130,
     borderRadius: 65,
     objectFit: "cover",
-
   },
   Header: {
     flexDirection: "row",

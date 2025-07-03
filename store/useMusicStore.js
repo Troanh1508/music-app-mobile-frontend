@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { API_URL } from "../constants/api";
 
-export const useMusicStore = create((set) => ({
+export const useMusicStore = create((set, get) => ({
     songs: [],
     songsInAlbum: [],
     albums: [],
@@ -13,6 +13,7 @@ export const useMusicStore = create((set) => ({
     searchedSongs: [],
     searchedAlbums: [],
     searchedArtists: [],
+
 
 
     fetchSongs: async () => {
@@ -117,7 +118,24 @@ export const useMusicStore = create((set) => ({
             set({ error: error.message });
         }
 
+    },
+
+    toggleFavoriteSong: async (userId, songId) => {
+        try {
+        const response = await fetch(`${API_URL}/api/favorites/mobile`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user: userId, song: songId }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Failed to toggle favorite");
+        
+        await get().fetchFavoriteSongs(userId);
+
+    } catch (error) {
+        set({ error: error.message });
     }
+    },
 
 
 }));

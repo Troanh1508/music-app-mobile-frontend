@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useAudioQueueStore } from '@/store/useAudioQueueStore'
 import { Image } from 'expo-image'
@@ -16,6 +16,8 @@ import {
 } from '@/store/player-service'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import COLORS from '@/constants/colors'
+import { useMusicStore } from '@/store/useMusicStore'
+import { useAuthStore } from '@/store/useAuthStore'
 
 
 
@@ -26,6 +28,8 @@ export default function PlayerScreen() {
   const currentTrack = queue[currentIndex];
   const { position, duration, state, playingTrack, playbackSpeed, volume, error } = useAudioPro();
   const { top, bottom } = useSafeAreaInsets()
+  const { favoriteSongs, toggleFavoriteSong } = useMusicStore();
+  const { user } = useAuthStore();
   // Reset needsTrackLoad when the track actually changes
   useEffect(() => {
     if (playingTrack?.id === currentTrack?.id) {
@@ -152,7 +156,7 @@ export default function PlayerScreen() {
     setLocalProgressInterval(newInterval);
   };
 
-  const isFavorite = 1;
+  const isFavorite = favoriteSongs.some(song => song._id === currentTrack.id);
 
 
   return (
@@ -183,13 +187,16 @@ export default function PlayerScreen() {
                 <Text style={styles.title}>
                   {currentTrack.title || "unknown title"}
                 </Text>
+                
+                  <Pressable onPress={() => { toggleFavoriteSong(user._id, currentTrack.id)}}>
                 <FontAwesome
                   name={isFavorite ? 'heart' : 'heart-o'}
                   size={22}
                   color={isFavorite ? COLORS.primary : COLORS.white}
                   style={{ marginHorizontal: 14 }}
-                // onPress={toggleFavorite}
+                  
                 />
+                </Pressable>
               </View>
               {/* Artist */}
 
@@ -241,8 +248,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   artwork: { width: '100%', height: '100%', borderRadius: 12 },
-  title: { color: '#fff', fontSize: 22, fontWeight: 'bold', marginBottom: 8 },
-  artist: { color: '#aaa', fontSize: 20, marginBottom: 32 },
+  title: { color: '#fff', fontSize: 22, fontWeight: 'bold'},
+  artist: { color: '#aaa', fontSize: 20 },
   controls: { flexDirection: 'row', alignItems: 'center', gap: 32 },
   artworkImageContainer: {
     shadowOffset: {

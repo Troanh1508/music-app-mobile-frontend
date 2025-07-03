@@ -1,9 +1,9 @@
-import { View, Text, FlatList, ScrollView, Pressable, RefreshControl } from 'react-native';
+import { View, Text, FlatList, ScrollView, RefreshControl, Pressable } from 'react-native';
 import styles from '@/assets/styles/home.styles';
 import { useState, useEffect } from 'react';
 import { Image } from 'expo-image';
 import { useMusicStore } from '@/store/useMusicStore';
-import { Link } from 'expo-router';
+import { useRouter} from 'expo-router';
 import { useAuthStore } from '@/store/useAuthStore';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
@@ -13,7 +13,7 @@ export default function Home() {
     const [refreshing, setRefreshing] = useState(false);
     const { fetchSongs, songs, albums, fetchAlbums, artists, fetchArtists } = useMusicStore();
     const { user } = useAuthStore(); // <-- get user from auth store
-
+    const router = useRouter();
 
     const loadData = async () => {
         try {
@@ -34,14 +34,23 @@ export default function Home() {
 
     const renderSongItem = ({ item }) => (
         <View style={styles.Card}>
-            <Link href={`(tabs)/(home)/album/${item.album._id}`}>
+            <Pressable onPress={() => {
+                if (item.album && item.album._id) {
+                    router.push(`(tabs)/(home)/album/${item.album._id}`);
+                } else {
+                    router.push(`(tabs)/(home)/single/${item._id}`); // Custom screen for singles/no album
+                }
+            }}
+        >
+            
                 <Image source={item.imageUrl} style={styles.Image} />
                 <View>
                     <Text numberOfLines={1} style={styles.Title}>
                         {item.title}
                     </Text>
                 </View>
-            </Link>
+            
+            </Pressable>
             <Text numberOfLines={1} style={styles.caption}>
                 {item.artist.name}
             </Text>
@@ -50,14 +59,14 @@ export default function Home() {
 
     const renderAlbumItem = ({ item }) => (
         <View style={styles.Card}>
-            <Link href={`(tabs)/(home)/album/${item._id}`}>
+            <Pressable onPress={() => { router.push(`(tabs)/(home)/album/${item._id}`);}}>
                 <Image source={item.imageUrl} style={styles.Image} />
                 <View>
                     <Text numberOfLines={1} style={styles.Title}>
                         {item.title}
                     </Text>
                 </View>
-            </Link>
+            </Pressable>
             <Text numberOfLines={1} style={styles.caption}>
                 {item.artist.name}
             </Text>
@@ -66,14 +75,14 @@ export default function Home() {
 
     const renderArtistItem = ({ item }) => (
         <View style={styles.Card}>
-            <Link href={`(tabs)/(home)/artist/${item._id}`}>
+            <Pressable onPress={() => { router.push(`(tabs)/(home)/artist/${item._id}`); }}>
                 <Image source={item.imageUrl} style={styles.ArtistImage} />
                 <View>
                     <Text numberOfLines={1} style={{ ...styles.Title, textAlign: 'center' }}>
                         {item.name}
                     </Text>
                 </View>
-            </Link>
+            </Pressable>
         </View>
     );
 
