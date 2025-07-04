@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useMusicStore } from '@/store/useMusicStore';
 import { useDebounce } from "@/hooks/useDebounce";
 import { searchStyles } from "@/assets/styles/search.styles";
+import { favoriteStyles } from '@/assets/styles/favorite.styles';
 import COLORS from "@/constants/colors";
 import { colors, fontSize } from '@/constants/tokens';
 import { Ionicons, Entypo } from "@expo/vector-icons";
@@ -46,7 +47,7 @@ export default function Search() {
   }, [debouncedSearchQuery]);
 
   const ItemDivider = () => (
-    <View style={{ ...styles.itemSeparator, marginVertical: 9, marginLeft: 60 }} />
+    <View style={{ ...favoriteStyles.itemSeparator, marginVertical: 9, marginLeft: 60 }} />
   )
 
   const renderSongItem = ({ item, index }) => {
@@ -59,9 +60,9 @@ export default function Search() {
           AudioPro.play(queue[index]);// Set the queue and start playing from the clicked song
         }}
       >
-        <View style={styles.trackItemContainer}>
+        <View style={favoriteStyles.trackItemContainer}>
           <View>
-            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.trackArtworkImage, }} />
+            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...favoriteStyles.trackArtworkImage, }} />
           </View>
 
           <View
@@ -92,7 +93,7 @@ export default function Search() {
                   <Text
                     numberOfLines={1}
                     style={{
-                      ...styles.trackTitleText,
+                      ...favoriteStyles.trackTitleText,
                       color: isActiveTrack ? COLORS.primary : colors.text,
                       flex: 1,
                     }}
@@ -103,7 +104,7 @@ export default function Search() {
                 </View>
 
                 {item.artist.name && (
-                  <Text numberOfLines={1} style={styles.trackArtistText}>
+                  <Text numberOfLines={1} style={favoriteStyles.trackArtistText}>
                     {item.artist.name}
                   </Text>
                 )}
@@ -129,9 +130,9 @@ export default function Search() {
     return (
 
       <Pressable onPress={() => { router.push(`(tabs)/(search)/album/${item._id}`);}}>
-        <View style={styles.trackItemContainer}>
+        <View style={favoriteStyles.trackItemContainer}>
           <View>
-            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.trackArtworkImage, }} />
+            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...favoriteStyles.trackArtworkImage, }} />
           </View>
 
           <View
@@ -152,7 +153,7 @@ export default function Search() {
                   <Text
                     numberOfLines={1}
                     style={{
-                      ...styles.trackTitleText,
+                      ...favoriteStyles.trackTitleText,
                       color: colors.text,
                       flex: 1,
                     }}
@@ -163,7 +164,7 @@ export default function Search() {
                 </View>
 
                 {item.artist.name && (
-                  <Text numberOfLines={1} style={styles.trackArtistText}>
+                  <Text numberOfLines={1} style={favoriteStyles.trackArtistText}>
                     {item.artist.name}
                   </Text>
                 )}
@@ -181,9 +182,9 @@ export default function Search() {
     return (
 
       <Pressable onPress={() => { router.push(`(tabs)/(search)/artist/${item._id}`); }}>
-        <View style={styles.trackItemContainer}>
+        <View style={favoriteStyles.trackItemContainer}>
           <View>
-            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...styles.ArtistImage, }} />
+            <Image source={item.imageUrl ?? unknownTrackImageUri} style={{ ...favoriteStyles.ArtistImage, }} />
           </View>
 
           <View
@@ -203,7 +204,7 @@ export default function Search() {
               <Text
                 numberOfLines={1}
                 style={{
-                  ...styles.trackTitleText,
+                  ...favoriteStyles.trackTitleText,
                   color: colors.text,
                   flex: 1,
                 }}
@@ -314,55 +315,3 @@ function NoResultsFound() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  trackItemContainer: {
-    flexDirection: 'row',
-    columnGap: 14,
-    alignItems: 'center',
-    paddingRight: 20,
-  },
-  trackPlayingIconIndicator: {
-    position: 'absolute',
-    top: 18,
-    left: 16,
-    width: 16,
-    height: 16,
-  },
-  trackPausedIndicator: {
-    position: 'absolute',
-    top: 14,
-    left: 14,
-  },
-  trackArtworkImage: {
-    borderRadius: 8,
-    width: 50,
-    height: 50,
-  },
-  ArtistImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 65,
-    objectFit: "cover",
-  },
-  trackTitleText: {
-    fontSize: fontSize.sm,
-    fontWeight: '600',
-    maxWidth: '90%',
-  },
-  trackArtistText: {
-    color: colors.textMuted,
-    fontSize: 14,
-    marginTop: 4,
-  },
-  itemSeparator: {
-    borderColor: colors.textMuted,
-    borderWidth: StyleSheet.hairlineWidth,
-    opacity: 0.3,
-  },
-  emptyContentText: {
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-})
