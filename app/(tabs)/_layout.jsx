@@ -1,5 +1,5 @@
 import { Stack, Tabs } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import COLORS from '@/constants/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
@@ -50,10 +50,14 @@ export default function TabLayout() {
                 <Ionicons name="search-outline" color={color} size={size} />
                 ),
             }} />
-
             <Tabs.Screen name="(favorite)" options={{title:"Favorites",
                 tabBarIcon: ({color, size}) => (
                 <Ionicons name="heart-outline" color={color} size={size} />
+                ),
+            }}/>
+            <Tabs.Screen name="(playlist)" options={{title:"Playlists",
+                tabBarIcon: ({color, size}) => (
+                <MaterialCommunityIcons name="playlist-play" color={color} size={size} />
                 ),
             }}/>
             <Tabs.Screen name="profile" options={{title:"Profile",

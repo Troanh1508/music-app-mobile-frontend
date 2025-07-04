@@ -18,11 +18,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import COLORS from '@/constants/colors'
 import { useMusicStore } from '@/store/useMusicStore'
 import { useAuthStore } from '@/store/useAuthStore'
+import { useRouter } from 'expo-router'
 
 
 
 export default function PlayerScreen() {
-
+  const router = useRouter();
   const { queue, currentIndex, setCurrentIndex } = useAudioQueueStore();
   const [progressInterval, setLocalProgressInterval] = useState(getProgressInterval());
   const currentTrack = queue[currentIndex];
@@ -35,7 +36,7 @@ export default function PlayerScreen() {
     if (playingTrack?.id === currentTrack?.id) {
       setNeedsTrackLoad(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [playingTrack?.id]);
 
   // Track whether we need to load a new track before playing
@@ -161,6 +162,14 @@ export default function PlayerScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={{ flexDirection: "row" }}>
+        <Ionicons
+          onPress={() => router.back()}
+          name="arrow-back"
+          size={24}
+          color="white"
+        />
+      </View>
       {/* Artwork */}
       <View style={{ flex: 1, marginTop: top, marginBottom: bottom }}>
         <View style={styles.artworkImageContainer}>

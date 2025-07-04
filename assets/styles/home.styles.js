@@ -1,11 +1,11 @@
 // styles/home.styles.js
 import { StyleSheet } from "react-native";
-import COLORS from "../../constants/colors";
+import COLORS from "@/constants/colors";
 
-const styles = StyleSheet.create({
+export const homeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    maxHeight: "30%",
+    maxHeight: "100%",
     backgroundColor: COLORS.background,
   },
   loadingContainer: {
@@ -127,5 +127,3 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
-
-export default styles;

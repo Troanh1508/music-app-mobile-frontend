@@ -1,16 +1,14 @@
 import { View, Text, TextInput, Pressable, FlatList, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, Ionicons } from '@expo/vector-icons'
 import { useMusicStore } from '@/store/useMusicStore';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { Image } from 'expo-image';
 import { useAuthStore } from '@/store/useAuthStore';
 import { unknownArtistImageUri, unknownTrackImageUri } from '@/constants/images';
 import { useAudioQueueStore } from '@/store/useAudioQueueStore';
 import { colors, fontSize } from '@/constants/tokens';
 import { mapSongsToQueue } from '@/helpers/mapSongsToQueue';
-import { AudioPro, AudioProState, useAudioPro } from 'react-native-audio-pro';
-import COLORS from '@/constants/colors';
+import { AudioPro } from 'react-native-audio-pro';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { searchStyles } from '@/assets/styles/search.styles';
 import { favoriteStyles } from '@/assets/styles/favorite.styles';
@@ -124,7 +122,7 @@ export default function Favorite() {
             ListFooterComponent={ItemDivider}
             ListEmptyComponent={
               <View>
-                <Text style={favoriteStyles.emptyContentText}>No favorite songs</Text>
+                <Text style={favoriteStyles.emptyContentText}>No Songs</Text>
                 <Image
                   source={unknownTrackImageUri}
                   style={favoriteStyles.emptyContentImage}

@@ -20,13 +20,13 @@ export const SongShortcutsMenu = ({ song, children }) => {
                 toggleFavoriteSong(user._id, song._id)
                 break
             case 'add-to-playlist':
-                router.push({ pathname: '(modals)/addToPlaylist', params: { trackUrl: track.url } })
+                router.push({ pathname: '(modals)/addToPlaylist', params: { id: song._id },  })
                 break
             case 'go-to-album':
-                router.push(`./album/${song.album._id}`)
+                song.album? router.push(`/album/${song.album._id}`) : router.push(`/single/${song._id}`)
                 break
             case 'go-to-artist':
-                router.push(`./artist/${song.artist._id}`)
+                router.push(`/artist/${song.artist._id}`)
                 break
             default:
                 console.warn(`Unknown menu action ${id}`)
@@ -50,6 +50,10 @@ export const SongShortcutsMenu = ({ song, children }) => {
                 {
                     id: 'go-to-artist',
                     title: 'Go to artist',
+                },
+                {
+                    id: 'go-to-album',
+                    title: 'Go to album',
                 },
             ]}
         >

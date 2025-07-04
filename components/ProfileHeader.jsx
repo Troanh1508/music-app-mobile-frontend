@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
-import { useAuthStore } from '../store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import { Image } from "expo-image";
-import styles from "../assets/styles/profile.styles";
+import styles from "@/assets/styles/profile.styles";
 
 export default function ProfileHeader() {
     const { user } = useAuthStore();

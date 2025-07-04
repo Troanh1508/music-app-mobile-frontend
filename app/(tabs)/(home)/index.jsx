@@ -1,5 +1,5 @@
 import { View, Text, FlatList, ScrollView, RefreshControl, Pressable } from 'react-native';
-import styles from '@/assets/styles/home.styles';
+import { homeStyles } from '@/assets/styles/home.styles';
 import { useState, useEffect } from 'react';
 import { Image } from 'expo-image';
 import { useMusicStore } from '@/store/useMusicStore';
@@ -33,7 +33,7 @@ export default function Home() {
     }, []);
 
     const renderSongItem = ({ item }) => (
-        <View style={styles.Card}>
+        <View style={homeStyles.Card}>
             <Pressable onPress={() => {
                 if (item.album && item.album._id) {
                     router.push(`(tabs)/(home)/album/${item.album._id}`);
@@ -43,42 +43,42 @@ export default function Home() {
             }}
         >
             
-                <Image source={item.imageUrl} style={styles.Image} />
+                <Image source={item.imageUrl} style={homeStyles.Image} />
                 <View>
-                    <Text numberOfLines={1} style={styles.Title}>
+                    <Text numberOfLines={1} style={homeStyles.Title}>
                         {item.title}
                     </Text>
                 </View>
             
             </Pressable>
-            <Text numberOfLines={1} style={styles.caption}>
+            <Text numberOfLines={1} style={homeStyles.caption}>
                 {item.artist.name}
             </Text>
         </View>
     );
 
     const renderAlbumItem = ({ item }) => (
-        <View style={styles.Card}>
-            <Pressable onPress={() => { router.push(`(tabs)/(home)/album/${item._id}`);}}>
-                <Image source={item.imageUrl} style={styles.Image} />
+        <View style={homeStyles.Card}>
+            <Pressable onPress={() => { router.push(`/album/${item._id}`);}}>
+                <Image source={item.imageUrl} style={homeStyles.Image} />
                 <View>
-                    <Text numberOfLines={1} style={styles.Title}>
+                    <Text numberOfLines={1} style={homeStyles.Title}>
                         {item.title}
                     </Text>
                 </View>
             </Pressable>
-            <Text numberOfLines={1} style={styles.caption}>
+            <Text numberOfLines={1} style={homeStyles.caption}>
                 {item.artist.name}
             </Text>
         </View>
     );
 
     const renderArtistItem = ({ item }) => (
-        <View style={styles.Card}>
-            <Pressable onPress={() => { router.push(`(tabs)/(home)/artist/${item._id}`); }}>
-                <Image source={item.imageUrl} style={styles.ArtistImage} />
+        <View style={homeStyles.Card}>
+            <Pressable onPress={() => { router.push(`/artist/${item._id}`); }}>
+                <Image source={item.imageUrl} style={homeStyles.ArtistImage} />
                 <View>
-                    <Text numberOfLines={1} style={{ ...styles.Title, textAlign: 'center' }}>
+                    <Text numberOfLines={1} style={{ ...homeStyles.Title, textAlign: 'center' }}>
                         {item.name}
                     </Text>
                 </View>
@@ -153,43 +153,43 @@ export default function Home() {
 
 
             <View style={{ flex: 1 }}>
-                <Text style={{ ...styles.headerTitle, marginLeft: 15, marginTop: 20 }}>
+                <Text style={{ ...homeStyles.headerTitle, marginLeft: 15, marginTop: 20 }}>
                     New Songs
                 </Text>
-                <View style={styles.container}>
+                <View style={homeStyles.container}>
                     <FlatList
                         data={songs}
                         renderItem={renderSongItem}
                         keyExtractor={(item) => item._id}
-                        contentContainerStyle={styles.listContainer}
+                        contentContainerStyle={homeStyles.listContainer}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     />
                 </View>
 
-                <Text style={{ ...styles.headerTitle, marginLeft: 15 }}>
+                <Text style={{ ...homeStyles.headerTitle, marginLeft: 15 }}>
                     New Albums
                 </Text>
-                <View style={styles.container}>
+                <View style={homeStyles.container}>
                     <FlatList
                         data={albums}
                         renderItem={renderAlbumItem}
                         keyExtractor={(item) => item._id}
-                        contentContainerStyle={styles.listContainer}
+                        contentContainerStyle={homeStyles.listContainer}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     />
                 </View>
-                <Text style={{ ...styles.headerTitle, marginLeft: 15 }}>
+                <Text style={{ ...homeStyles.headerTitle, marginLeft: 15 }}>
                     New Artists
                 </Text>
 
-                <View style={styles.container}>
+                <View style={homeStyles.container}>
                     <FlatList
                         data={artists}
                         renderItem={renderArtistItem}
                         keyExtractor={(item) => item._id}
-                        contentContainerStyle={styles.listContainer}
+                        contentContainerStyle={homeStyles.listContainer}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                     />
