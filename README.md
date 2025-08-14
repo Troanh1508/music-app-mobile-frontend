@@ -1,7 +1,6 @@
 # 🎵 Online Music App — Mobile
 Mobile part of online music streaming service built with React Native + Expo.
 
-<img src="readme/desktop.png"/>
 <div align="middle">
   <img src="readme/mobile-home.png" width="24%"/>
   <img src="readme/mobile-artist.png" width="24%"/>
