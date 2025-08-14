@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router'
 import { useMusicStore } from '@/store/useMusicStore'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useState } from 'react';
-import { Modal, View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { Alert, Modal, View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 
 export const PlaylistShortcutsMenu = ({ playlist, children }) => {
     const router = useRouter()
@@ -42,12 +42,6 @@ export const PlaylistShortcutsMenu = ({ playlist, children }) => {
             case 'add-to-playlist':
                 router.push({ pathname: '(modals)/addToPlaylist', params: { id: song._id }, })
                 break
-            case 'go-to-album':
-                song.album ? router.push(`/album/${song.album._id}`) : router.push(`/single/${song._id}`)
-                break
-            case 'go-to-artist':
-                router.push(`/artist/${song.artist._id}`)
-                break
             default:
                 console.warn(`Unknown menu action ${id}`)
         }
@@ -65,14 +59,6 @@ export const PlaylistShortcutsMenu = ({ playlist, children }) => {
                     {
                         id: 'delete-playlist',
                         title: 'Delete playlist',
-                    },
-                    {
-                        id: 'go-to-artist',
-                        title: 'Go to artist',
-                    },
-                    {
-                        id: 'go-to-album',
-                        title: 'Go to album',
                     },
                 ]}
             >
