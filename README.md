@@ -1,12 +1,12 @@
 # 🎵 Online Music App — Mobile
-Mobile part of Spotify-like music streaming service built with React Native + Expo.
+Mobile part of online music streaming service built with React Native + Expo.
 
 <img src="readme/desktop.png"/>
 <div align="middle">
-  <img src="readme/mobile-home.png" width="25%"/>
-  <img src="readme/mobile-artist.png" width="25%"/>
-  <img src="readme/mobile-player.png" width="25%"/>
-  <img src="readme/mobile-lockscreen.png" width="25%"/>
+  <img src="readme/mobile-home.png" width="24%"/>
+  <img src="readme/mobile-artist.png" width="24%"/>
+  <img src="readme/mobile-player.png" width="24%"/>
+  <img src="readme/mobile-lockscreen.png" width="24%"/>
 </div>
 
 ## Features
